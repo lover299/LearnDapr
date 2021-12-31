@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Hardware.Info;
+using LicTest.Param;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +8,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace LicTest
 {
@@ -13,6 +16,8 @@ namespace LicTest
     {
         static void Main(string[] args)
         {
+            string notSignFile = "NotSignFile.xml";
+            string signFile = "SignedFile.xml";
             string publicKey = @"      <RSAKeyValue><Modulus>sJ54h1tysDfp4Klou2XJWxZPdjsWDbfDvTdU3hYLejmpwIvcLcZpIZytsiKU272HuJcyCAEBxlpqvE5dJdFRXM8AW0wumxOyHhzqnawBxio27lklGkMtpMLtrExgickjTBnVacN+QS21fXP7p/XFY4HKOqF74vhLwCbCdYcMPhE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
             /*
              hVLbTtwwEP0Va1+R40vuyIm0t4iIpYsUIfHqJmZjNXFSxyHst/HAJ/ELdQKlAlWtH8YzZ+bMmZHm9fmFXXFdTVyLvNpxw8FT26jh8mmQyao2pr9EaJomZ3KdTp8QxZig+5tDUdai5VCqwXBVitUHq/o/a5VayaEWVa4qWXLT6VR1BtQLxtDXHMuH7ai1UOY43PdHfSVPtdDpA28GwdDfk6zId2kBCfQhJZDGLokxwUEESRwFXhBQz4dxSMOQEoqhjzFDM4PttHwUhTwpbkYtAHpHcvXQpWTtx6Hn0sQnJAyt5wdexNCfAnbsheZGqlNxHoxoC6Elb76N7Xc7EcYuDSDB9kG82PU6jFyG/kVit7qrxtKsSyMfbVGn5pE2shuuxTklju9Qhn6HC74MstsfDgAACCgmoZUiCcXWpdhdlLHz9l3gee8PFtv24w/bZ3t7Z+H3YAbvlPw52uuYtW24FG+y/SbbZJltEeFgv01yZUQTeCDjrWzOIAA3XSUaQDwKCiP63i4ICE2Wxm9y6PPdpb8A
@@ -28,12 +33,24 @@ namespace LicTest
             privateKey2.ExportParameters(false);
             try
             {
+                HardwareInfo info=new HardwareInfo();
+                info.RefreshAll();
+                Console.WriteLine(info.CpuList[0].ProcessorId);
+                Console.WriteLine(info.BiosList[0].SerialNumber);
+                Console.WriteLine(info.MemoryList[0].SerialNumber);
+                Console.WriteLine(info.MotherboardList[0].SerialNumber);
                 Console.WriteLine("input:");
                 string message = Console.ReadLine();
                 Console.WriteLine("sign message...");
                 byte[] data = ASCIIEncoding.UTF8.GetBytes(message);
                 Console.WriteLine("message bytes");
                 Console.WriteLine(BitConverter.ToString(data));
+                //-sign xml
+                CommonParam newParam=new CommonParam();
+                newParam.CruxMessage = message;
+                SerializeFile.SerializeToXmlFile(newParam, notSignFile);
+                SignAndVerify.SignXmlFile(notSignFile,signFile, privateKey);
+                //-end
                 byte[] signedData;
                 using (MemoryStream stream = new MemoryStream(data))
                 {
@@ -57,14 +74,22 @@ namespace LicTest
                 byte[] encryptedData = key.Encrypt(data, true);
                 Console.WriteLine($"encrypted message:");
                 Console.WriteLine(BitConverter.ToString(encryptedData));
-                Console.WriteLine($"decrypt message...");
+                //Console.WriteLine($"decrypt message...");
 
 
-                byte[] decryptData = privateKey.Decrypt(encryptedData, RSAEncryptionPadding.Pkcs1);
-                string decryptMessage = ASCIIEncoding.UTF8.GetString(decryptData);
-                Console.WriteLine($"decrypt message:");
-                Console.WriteLine($"{decryptMessage}");
+                //byte[] decryptData = privateKey.Decrypt(encryptedData, RSAEncryptionPadding.Pkcs1);
+                //string decryptMessage = ASCIIEncoding.UTF8.GetString(decryptData);
+                //Console.WriteLine($"decrypt message:");
+                //Console.WriteLine($"{decryptMessage}");
 
+                Console.WriteLine($"read xml:");
+                result= SignAndVerify.VerifyXmlFile(signFile, key);
+                XmlDocument xmlDocument = new XmlDocument();
+                var signParam = SerializeFile.DeserializeXmlFromFile<CommonParam>(signFile);
+                // Load the passed XML file into the document. 
+                xmlDocument.Load(signFile);
+
+                Console.WriteLine($"verify xml {(result ? "success" : "failed")}");
                 Console.ReadLine();
 
             }

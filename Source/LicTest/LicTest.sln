@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LicTest", "LicTest\LicTest.csproj", "{69AF9AE2-9C1B-4AED-907C-2C9AD1811D12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LicenseManager", "LicTest\LicenseManager.csproj", "{69AF9AE2-9C1B-4AED-907C-2C9AD1811D12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LicenseVerify", "LicenseVerify\LicenseVerify.csproj", "{44ABF773-F9BE-4B3B-BFD1-352A7F46DCA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LicenseGenerator", "LicenseGenerator\LicenseGenerator.csproj", "{EB71E50D-EEE7-41E9-8889-60424C219B05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{69AF9AE2-9C1B-4AED-907C-2C9AD1811D12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69AF9AE2-9C1B-4AED-907C-2C9AD1811D12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69AF9AE2-9C1B-4AED-907C-2C9AD1811D12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44ABF773-F9BE-4B3B-BFD1-352A7F46DCA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44ABF773-F9BE-4B3B-BFD1-352A7F46DCA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44ABF773-F9BE-4B3B-BFD1-352A7F46DCA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44ABF773-F9BE-4B3B-BFD1-352A7F46DCA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB71E50D-EEE7-41E9-8889-60424C219B05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB71E50D-EEE7-41E9-8889-60424C219B05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB71E50D-EEE7-41E9-8889-60424C219B05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB71E50D-EEE7-41E9-8889-60424C219B05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
