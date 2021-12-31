@@ -24,18 +24,25 @@ namespace LicenseGenerator
         private void buttonGenerate_Click(object sender, EventArgs e)
         {
             string[] ids = SignAndVerify.DecodeBase64String(textBoxId.Text.Trim()).Split(';');
-            if (ids.Length!=3)
+            if (ids.Length != 3)
             {
                 MessageBox.Show("硬件ID（指纹）错误！");
             }
             else
             {
-               CommonParam param=  SystemInfo.FromSystemID(ids);
-                param.CruxMessage = textBoxMesage.Text;
-                X509Certificate2 certificate = new X509Certificate2();
-                certificate.Import("test.pfx", textBoxPassword.Text, X509KeyStorageFlags.PersistKeySet);
-                var privateKey = certificate.GetRSAPrivateKey();
-                LicTest.LicenseManager.SignatureParamToFile(param, licenseName, privateKey);
+                try
+                {
+                    CommonParam param = SystemInfo.FromSystemID(ids);
+                    param.CruxMessage = textBoxMesage.Text;
+                    X509Certificate2 certificate = new X509Certificate2();
+                    certificate.Import("test.pfx", textBoxPassword.Text, X509KeyStorageFlags.PersistKeySet);
+                    var privateKey = certificate.GetRSAPrivateKey();
+                    LicTest.LicenseManager.SignatureParamToFile(param, licenseName, privateKey);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
