@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>net6.0;net472</TargetFrameworks>
+	  <LangVersion>10.0</LangVersion>
+	  <Nullable>enable</Nullable>
+    <RootNamespace>BBK.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+</Project>
